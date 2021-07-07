@@ -28,25 +28,23 @@ public class Program {
         sb.append("3").append("  |  |  ").append("\n");
         System.out.println(sb.toString());
         System.out.println("Deseja iniciar uma partida?");
+        do{
         System.out.println("1 - Sim");
         System.out.println("2 - Não");
         System.out.print("R: ");
         user.iniciarPartida(sc.nextInt());
+        }while(user.isStart() == false);
         sb = new StringBuilder();
-        
-            System.out.println("Escolha uma linha e Coluna que deseja marcar");
+
+        System.out.println("Escolha uma linha e Coluna que deseja marcar.");
         do {
+            System.out.println("Turno do " + user.getObjeto());
             System.out.print("L: ");
             int linha = sc.nextInt();
             System.out.print("C: ");
             int coluna = sc.nextInt();
             user.addPosition(linha, coluna);
-            
-            
-            
-            
-        
-            
+            user.obterPosition();
         } while (user.isStart());
 
         sc.close();

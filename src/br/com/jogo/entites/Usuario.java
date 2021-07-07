@@ -11,8 +11,6 @@ package br.com.jogo.entites;
  */
 public class Usuario {
 
-    private int x;
-    private int o;
     String objeto = "X";
     private String position[][] = new String[3][3];
     private boolean start = false;
@@ -20,12 +18,8 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int x, int o) {
-        this.x = x;
-        this.o = o;
-    }
-
     public boolean iniciarPartida(int resposta) {
+
         if (resposta == 1) {
             return start = true;
         } else if (resposta == 2) {
@@ -33,6 +27,7 @@ public class Usuario {
         } else {
             aviso("OpcaoErrada");
         }
+
         return false;
     }
 
@@ -42,47 +37,47 @@ public class Usuario {
         }
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getO() {
-        return o;
-    }
-
-    public void setO(int o) {
-        this.o = o;
-    }
-
     public void obterPosition() {
+        int cont = 0;
         StringBuilder sb = new StringBuilder();
-        sb.append(" ").append(position[0][0]).append(" |").append(" ").append(position[0][1]).append(" |").append(" ").append(position[0][2]).append("\n");
-        sb.append("--- --- ---").append("\n");
-        sb.append(" ").append(position[1][0]).append(" |").append(" ").append(position[1][1]).append(" |").append(" ").append(position[1][2]).append("\n");
-        sb.append("--- --- ---").append("\n");
-        sb.append(" ").append(position[2][0]).append(" |").append(" ").append(position[2][1]).append(" |").append(" ").append(position[2][2]).append("\n");
-        for (int i = 0; i < position.length; i++) {
+        for (int linha = 0; linha < position.length; linha++) {
+            for (int coluna = 0; coluna < position[linha].length; coluna++) {
+                sb.append(" ");
+                if (position[linha][coluna] == null) {
+                    cont++;
+                    sb.append(" ");
+                } else {
+                    sb.append(position[linha][coluna]);
+                }
+                sb.append(" ");
 
-            for (int j = 0; j < position[i].length; j++) {
-
-                if (j == 2) {
+                if (coluna < 2) {
+                    sb.append("|");
+                }
+                if (coluna == 2) {
                     sb.append("\n");
                 }
-               
+
             }
-            if (i < 2) {
-             sb.append("--- --- ---").append("\n");
+            if (linha < 2) {
+                sb.append("--- --- ---").append("\n");
             }
         }
+        if (cont == 0) {
+            start = false;
+        }
+
+        System.out.println(sb.toString());
     }
 
     public void addPosition(int linha, int coluna) {
         if (linha < 3 && coluna < 3) {
-            position[linha][coluna] = objeto;
+            if (position[linha][coluna] == null) {
+                position[linha][coluna] = objeto;
+            } else {
+                System.out.println("Campo já preenchido!");
+            }
+
             if (objeto == "X") {
                 objeto = "O";
             } else {
@@ -99,6 +94,14 @@ public class Usuario {
 
     public void setStart(boolean start) {
         this.start = start;
+    }
+
+    public String getObjeto() {
+        return objeto;
+    }
+
+    public void setObjeto(String objeto) {
+        this.objeto = objeto;
     }
 
 }
