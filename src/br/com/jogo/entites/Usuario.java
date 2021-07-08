@@ -11,14 +11,29 @@ package br.com.jogo.entites;
  */
 public class Usuario {
 
-    private String msn;
     private String objeto = "X";
     //
+    //
+    private boolean perguntaInicial = true;
     private boolean start = false;
+    private boolean exit = false;
     //
     private String[][] position = new String[3][3];
 
     public Usuario() {
+    }
+
+    public void pergunta() {
+        StringBuilder sb = new StringBuilder();
+        if (perguntaInicial == true) {
+            sb.append("Iniciar Partida?").append("\n");
+        } else {
+            sb.append("Iniciar nova Partida?").append("\n");
+        }
+        sb.append("1 - Sim").append("\n");
+        sb.append("2 - Não").append("\n");
+        sb.append("R: ");
+        System.out.print(sb.toString());
     }
 
     public boolean iniciarPartida(int resposta) {
@@ -26,59 +41,64 @@ public class Usuario {
         if (resposta == 1) {
             return start = true;
         } else if (resposta == 2) {
+            exit = true;
             return start = false;
         } else {
-            aviso("OpcaoErrada");
+            msn("OpcaoErrada");
+            exit = false;
+            return start = false;
         }
 
-        return false;
     }
 
-    public void aviso(String motivo) {
+    public void msn(String motivo) {
         if (motivo == "OpcaoErrada") {
             System.out.println("Opção não encontrada, tente novamete.");
+        }
+
+        if (motivo == "vencedor") {
+            System.out.println("Vitoria do " + objeto);
         }
     }
 
     public void obterPosition() {
-        
 
-            int cont = 0;
-            StringBuilder sb = new StringBuilder();
-            for (int linha = 0; linha < position.length; linha++) {
-                for (int coluna = 0; coluna < position[linha].length; coluna++) {
+        int cont = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int linha = 0; linha < position.length; linha++) {
+            for (int coluna = 0; coluna < position[linha].length; coluna++) {
+                sb.append(" ");
+                if (position[linha][coluna] == null) {
+                    cont++;
                     sb.append(" ");
-                    if (position[linha][coluna] == null) {
-                        cont++;
-                        sb.append(" ");
-                    } else {
-                        sb.append(position[linha][coluna]);
-                    }
-                    sb.append(" ");
-
-                    if (coluna < 2) {
-                        sb.append("|");
-                    }
-                    if (coluna == 2) {
-                        sb.append("\n");
-                    }
-
+                } else {
+                    sb.append(position[linha][coluna]);
                 }
-                if (linha < 2) {
-                    sb.append("--- --- ---").append("\n");
+                sb.append(" ");
+
+                if (coluna < 2) {
+                    sb.append("|");
                 }
+                if (coluna == 2) {
+                    sb.append("\n");
+                }
+
             }
-        
-            System.out.println(sb.toString());
-            
-        if (verificarVencedor()) {
-            if (cont == 0) {
-                start = false;
+            if (linha < 2) {
+                sb.append("--- --- ---").append("\n");
             }
-        } else {
-            System.out.println(msn);
-            start = false;
         }
+
+        System.out.println(sb.toString());
+
+        if (verificarVencedor()) {
+            perguntaInicial = false;
+            start = false;
+        } else if (cont == 0) {
+            System.out.println("Empate!");
+            perguntaInicial = false;
+            start = false;
+        } 
     }
 
     public boolean verificarVencedor() {
@@ -89,8 +109,8 @@ public class Usuario {
 
             for (int i = 0; i < position.length; i++) {
 
-                // Por linha
-                // Por Coluna
+                // Por linha - if
+                // Por Coluna - else if
                 if (position[i][0] == objeto
                         && position[i][1] == objeto
                         && position[i][2] == objeto) {
@@ -110,14 +130,14 @@ public class Usuario {
                 if (count == 3) {
                     verificar = true;
                 }
-                
+
                 if (verificar) {
-                    msn = "Vitoria do " + objeto;
-                    return false;
+                    msn("vencedor");
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public void addPosition(int linha, int coluna) {
@@ -138,7 +158,6 @@ public class Usuario {
             System.out.println("Os valores setados não existem");
         }
     }
-    
 
     public boolean isStart() {
         return start;
@@ -156,12 +175,8 @@ public class Usuario {
         this.objeto = objeto;
     }
 
-    public String getMsn() {
-        return msn;
-    }
-
-    public void setMsn(String msn) {
-        this.msn = msn;
+    public boolean isExit() {
+        return exit;
     }
 
 }
