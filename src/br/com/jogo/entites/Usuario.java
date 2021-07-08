@@ -11,9 +11,12 @@ package br.com.jogo.entites;
  */
 public class Usuario {
 
-    String objeto = "X";
-    private String position[][] = new String[3][3];
+    private String msn;
+    private String objeto = "X";
+    //
     private boolean start = false;
+    //
+    private String[][] position = new String[3][3];
 
     public Usuario() {
     }
@@ -38,55 +41,104 @@ public class Usuario {
     }
 
     public void obterPosition() {
-        int cont = 0;
-        StringBuilder sb = new StringBuilder();
-        for (int linha = 0; linha < position.length; linha++) {
-            for (int coluna = 0; coluna < position[linha].length; coluna++) {
-                sb.append(" ");
-                if (position[linha][coluna] == null) {
-                    cont++;
+        
+
+            int cont = 0;
+            StringBuilder sb = new StringBuilder();
+            for (int linha = 0; linha < position.length; linha++) {
+                for (int coluna = 0; coluna < position[linha].length; coluna++) {
                     sb.append(" ");
-                } else {
-                    sb.append(position[linha][coluna]);
-                }
-                sb.append(" ");
+                    if (position[linha][coluna] == null) {
+                        cont++;
+                        sb.append(" ");
+                    } else {
+                        sb.append(position[linha][coluna]);
+                    }
+                    sb.append(" ");
 
-                if (coluna < 2) {
-                    sb.append("|");
-                }
-                if (coluna == 2) {
-                    sb.append("\n");
-                }
+                    if (coluna < 2) {
+                        sb.append("|");
+                    }
+                    if (coluna == 2) {
+                        sb.append("\n");
+                    }
 
+                }
+                if (linha < 2) {
+                    sb.append("--- --- ---").append("\n");
+                }
             }
-            if (linha < 2) {
-                sb.append("--- --- ---").append("\n");
+        
+            System.out.println(sb.toString());
+            
+        if (verificarVencedor()) {
+            if (cont == 0) {
+                start = false;
             }
-        }
-        if (cont == 0) {
+        } else {
+            System.out.println(msn);
             start = false;
         }
+    }
 
-        System.out.println(sb.toString());
+    public boolean verificarVencedor() {
+        int count = 0;
+        boolean verificar = false;
+        for (int j = 0; j < 2; j++) {
+            objeto = (objeto == "X") ? "O" : "X";
+
+            for (int i = 0; i < position.length; i++) {
+
+                // Por linha
+                // Por Coluna
+                if (position[i][0] == objeto
+                        && position[i][1] == objeto
+                        && position[i][2] == objeto) {
+                    verificar = true;
+                } else if (position[0][i] == objeto
+                        && position[1][i] == objeto
+                        && position[2][i] == objeto) {
+                    verificar = true;
+                }
+
+                //diagonal
+                if (position[0][0] == objeto & position[1][1] == objeto && position[2][2] == objeto
+                        || position[2][0] == objeto & position[1][1] == objeto && position[0][2] == objeto) {
+                    count++;
+                }
+
+                if (count == 3) {
+                    verificar = true;
+                }
+                
+                if (verificar) {
+                    msn = "Vitoria do " + objeto;
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void addPosition(int linha, int coluna) {
         if (linha < 3 && coluna < 3) {
             if (position[linha][coluna] == null) {
                 position[linha][coluna] = objeto;
+
+                if (objeto == "X") {
+                    objeto = "O";
+                } else {
+                    objeto = "X";
+                }
             } else {
                 System.out.println("Campo já preenchido!");
             }
 
-            if (objeto == "X") {
-                objeto = "O";
-            } else {
-                objeto = "X";
-            }
         } else {
             System.out.println("Os valores setados não existem");
         }
     }
+    
 
     public boolean isStart() {
         return start;
@@ -102,6 +154,14 @@ public class Usuario {
 
     public void setObjeto(String objeto) {
         this.objeto = objeto;
+    }
+
+    public String getMsn() {
+        return msn;
+    }
+
+    public void setMsn(String msn) {
+        this.msn = msn;
     }
 
 }

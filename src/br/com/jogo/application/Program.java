@@ -45,6 +45,14 @@ public class Program {
             int coluna = sc.nextInt();
             user.addPosition(linha, coluna);
             user.obterPosition();
+            
+            if (user.isStart() == false) {
+                System.out.println("Deseja ter uma nova jogada?");
+                System.out.println("1 - Sim");
+                System.out.println("2 - Não");
+                user.iniciarPartida(sc.nextInt());
+            }
+            
         } while (user.isStart());
 
         sc.close();
