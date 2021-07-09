@@ -44,7 +44,7 @@ public class Program {
                 } while (user.isStart());
             }
 
-        } while (user.isStart() == false && user.isExit() == true);
+        } while (user.isStart() == false && user.isExit());
 
         sc.close();
     }

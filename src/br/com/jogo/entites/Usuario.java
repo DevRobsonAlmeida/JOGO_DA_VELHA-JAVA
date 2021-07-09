@@ -5,22 +5,27 @@
  */
 package br.com.jogo.entites;
 
+import javax.annotation.PostConstruct;
+
 /**
  *
  * @author 99030499
  */
 public class Usuario {
 
+    private String playerOne;
+    private String PlayerTwo;
     private String objeto = "X";
     //
     //
     private boolean perguntaInicial = true;
     private boolean start = false;
-    private boolean exit = false;
+    private boolean exit = true;
     //
     private String[][] position = new String[3][3];
 
     public Usuario() {
+
     }
 
     public void pergunta() {
@@ -41,11 +46,11 @@ public class Usuario {
         if (resposta == 1) {
             return start = true;
         } else if (resposta == 2) {
-            exit = true;
+            exit = false;
             return start = false;
         } else {
             msn("OpcaoErrada");
-            exit = false;
+            exit = true;
             return start = false;
         }
 
@@ -65,7 +70,9 @@ public class Usuario {
 
         int cont = 0;
         StringBuilder sb = new StringBuilder();
+        sb.append("L  0   1   2  C").append("\n");
         for (int linha = 0; linha < position.length; linha++) {
+            sb.append(linha + " ");
             for (int coluna = 0; coluna < position[linha].length; coluna++) {
                 sb.append(" ");
                 if (position[linha][coluna] == null) {
@@ -85,20 +92,25 @@ public class Usuario {
 
             }
             if (linha < 2) {
-                sb.append("--- --- ---").append("\n");
+                sb.append("  --- --- ---").append("\n");
             }
         }
 
         System.out.println(sb.toString());
 
+        boolean endgame = false;
         if (verificarVencedor()) {
-            perguntaInicial = false;
-            start = false;
+            endgame = true;
         } else if (cont == 0) {
             System.out.println("Empate!");
+            endgame = true;
+        }
+        if (endgame) {
+            position = new String[3][3];
             perguntaInicial = false;
             start = false;
-        } 
+        }
+
     }
 
     public boolean verificarVencedor() {
@@ -130,7 +142,6 @@ public class Usuario {
                 if (count == 3) {
                     verificar = true;
                 }
-
                 if (verificar) {
                     msn("vencedor");
                     return true;
