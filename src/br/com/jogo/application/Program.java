@@ -29,8 +29,16 @@ public class Program {
         System.out.println(sb.toString());
         do {
             user.pergunta();
-            if (user.iniciarPartida(sc.nextInt())) {
 
+            if (user.iniciarPartida(sc.nextInt())) {
+                System.out.println("Obs: O primeiro jogador começará com o 'X'");
+                System.out.print("Nome do Primeiro jogador: ");
+                String p1 = sc.next();
+                System.out.print("Nome do Segundo jogador: ");
+                String p2 = sc.next();
+                System.out.println();
+                user.addNomes(p1, p2);
+                
                 System.out.println("Escolha uma linha e Coluna que deseja marcar.");
                 do {
                     System.out.println("Turno do " + user.getObjeto());

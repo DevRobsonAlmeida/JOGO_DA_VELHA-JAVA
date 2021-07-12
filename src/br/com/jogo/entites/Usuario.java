@@ -13,19 +13,23 @@ import javax.annotation.PostConstruct;
  */
 public class Usuario {
 
-    private String playerOne;
-    private String PlayerTwo;
     private String objeto = "X";
     //
+    private String[] nome = new String[2];
+    private String[][] position = new String[3][3];
     //
     private boolean perguntaInicial = true;
     private boolean start = false;
     private boolean exit = true;
     //
-    private String[][] position = new String[3][3];
 
     public Usuario() {
 
+    }
+    
+    public void addNomes(String playerOne, String PlayerTwo){
+        nome[0] = playerOne;
+        nome[1] = PlayerTwo;
     }
 
     public void pergunta() {
@@ -62,7 +66,8 @@ public class Usuario {
         }
 
         if (motivo == "vencedor") {
-            System.out.println("Vitoria do " + objeto);
+            String vencedor = objeto == "X"? nome[0]:nome[1];
+            System.out.println("~~ Vitoria do " + vencedor + " ~~");
         }
     }
 
@@ -117,8 +122,7 @@ public class Usuario {
         int count = 0;
         boolean verificar = false;
         for (int j = 0; j < 2; j++) {
-            objeto = (objeto == "X") ? "O" : "X";
-
+            mudarObjeto();
             for (int i = 0; i < position.length; i++) {
 
                 // Por linha - if
@@ -150,17 +154,16 @@ public class Usuario {
         }
         return false;
     }
+    
+    public void mudarObjeto(){
+        objeto = (objeto == "X") ? "O" : "X";
+    }
 
     public void addPosition(int linha, int coluna) {
         if (linha < 3 && coluna < 3) {
             if (position[linha][coluna] == null) {
                 position[linha][coluna] = objeto;
-
-                if (objeto == "X") {
-                    objeto = "O";
-                } else {
-                    objeto = "X";
-                }
+                mudarObjeto();
             } else {
                 System.out.println("Campo já preenchido!");
             }
@@ -189,5 +192,11 @@ public class Usuario {
     public boolean isExit() {
         return exit;
     }
+
+    public String[] getNome() {
+        return nome;
+    }
+    
+    
 
 }
